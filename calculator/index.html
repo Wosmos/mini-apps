@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Scientific Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="circle c-one"></div>
+    <div class="circle c-two"></div>
+    <div class=" circle c-three"></div>
+
+
+
+    <div class="calculator">
+        <div class="display-container">
+            <div class="memory-display" id="memoryDisplay"></div>
+            <input type="text" id="expression" readonly>
+            <input type="text" id="display" readonly>
+        </div>
+
+        <div class="settings">
+            <div class="mode-switch">
+                <span>RAD</span>
+                <label class="switch">
+                    <input type="checkbox" id="angleMode">
+                    <span class="slider"></span>
+                </label>
+                <span>DEG</span>
+            </div>
+            <button id="shiftBtn" class="function" onclick="toggleShift()">SHIFT</button>
+        </div>
+
+        <div class="buttons">
+            <!-- Memory Functions -->
+            <button class="memory" onclick="memoryStore()">MS</button>
+            <button class="memory" onclick="memoryRecall()">MR</button>
+            <button class="memory" onclick="memoryAdd()">M+</button>
+            <button class="memory" onclick="memoryClear()">MC</button>
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="function" onclick="backspace()">⌫</button>
+
+            <!-- Functions Row 1 -->
+            <button class="function" onclick="addFunction('sin')">sin</button>
+            <button class="function" onclick="addFunction('cos')">cos</button>
+            <button class="function" onclick="addFunction('tan')">tan</button>
+            <button class="function" onclick="addToDisplay('(')">(</button>
+            <button class="function" onclick="addToDisplay(')')">)</button>
+            <button class="function" onclick="addFunction('fact')">n!</button>
+
+            <!-- Functions Row 2 -->
+            <button class="function shift-function" data-normal="sin" data-shift="asin">sin⁻¹</button>
+            <button class="function shift-function" data-normal="cos" data-shift="acos">cos⁻¹</button>
+            <button class="function shift-function" data-normal="tan" data-shift="atan">tan⁻¹</button>
+            <button class="function" onclick="addFunction('log')">log</button>
+            <button class="function" onclick="addFunction('ln')">ln</button>
+            <button class="function" onclick="addToDisplay('^')">x^y</button>
+
+            <!-- Numbers and Basic Operators -->
+            <button class="number" onclick="addToDisplay('7')">7</button>
+            <button class="number" onclick="addToDisplay('8')">8</button>
+            <button class="number" onclick="addToDisplay('9')">9</button>
+            <button class="operator" onclick="addToDisplay('*')">×</button>
+            <button class="operator" onclick="addToDisplay('/')">/</button>
+            <button class="function" onclick="addFunction('sqrt')">√</button>
+
+            <button class="number" onclick="addToDisplay('4')">4</button>
+            <button class="number" onclick="addToDisplay('5')">5</button>
+            <button class="number" onclick="addToDisplay('6')">6</button>
+            <button class="operator" onclick="addToDisplay('+')">+</button>
+            <button class="operator" onclick="addToDisplay('-')">-</button>
+            <button class="function" onclick="addFunction('cbrt')">∛</button>
+
+            <button class="number" onclick="addToDisplay('1')">1</button>
+            <button class="number" onclick="addToDisplay('2')">2</button>
+            <button class="number" onclick="addToDisplay('3')">3</button>
+            <button class="function" onclick="addToDisplay('π')">π</button>
+            <button class="function" onclick="addToDisplay('e')">e</button>
+            <button class="function" onclick="addFunction('abs')">|x|</button>
+
+            <button class="function" onclick="addFunction('10^')">10^x</button>
+            <button class="number" onclick="addToDisplay('0')">0</button>
+            <button class="number" onclick="addToDisplay('.')">.</button>
+            <button class="function" onclick="toggleSign()">±</button>
+            <button class="equals" onclick="calculate()" style="grid-column: span 2">=</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
