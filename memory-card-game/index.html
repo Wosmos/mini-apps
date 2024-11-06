@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Memory Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4338ca;
+            --secondary: #8b5cf6;
+            --accent: #f43f5e;
+            --success: #22c55e;
+            --background: #ffffff;
+            --surface: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f6f7ff 0%, #e8eaff 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .theme-select {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .theme-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 1rem;
+            background: white;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-btn.active {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .game-board {
+            display: grid;
+            gap: 1rem;
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+
+        .card {
+            aspect-ratio: 3/4;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.matched {
+            transform: rotateY(180deg);
+            animation: pulse 1s;
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: white;
+            transform: rotateY(180deg);
+            padding: 1rem;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-size: 2rem;
+            color: white;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .button.secondary {
+            background: var(--secondary);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .modal.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            transform: scale(0.9);
+            transition: 0.3s;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal.visible .modal-content {
+            transform: scale(1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: rotateY(180deg) scale(1);
+            }
+
+            50% {
+                transform: rotateY(180deg) scale(1.1);
+            }
+
+            100% {
+                transform: rotateY(180deg) scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .theme-select {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Ultimate Memory Challenge</h1>
+
+            <div class="theme-select" id="themeSelect">
+                <button class="theme-btn active" data-theme="pokemon">Pokémon</button>
+                <button class="theme-btn" data-theme="rickandmorty">Rick & Morty</button>
+                <button class="theme-btn" data-theme="disney">Disney</button>
+                <button class="theme-btn" data-theme="marvel">Marvel</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="level">Level 1</div>
+                    <div class="stat-label">Current Level</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="moves">0</div>
+                    <div class="stat-label">Moves</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pairs">0/0</div>
+                    <div class="stat-label">Pairs Found</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="timer">0:00</div>
+                    <div class="stat-label">Time</div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </header>
+
+        <div class="game-board" id="gameBoard"></div>
+
+        <div class="controls">
+            <button class="button" id="restartButton">
+                <i class="fas fa-redo"></i> Restart Level
+            </button>
+            <button class="button secondary" id="soundToggle">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <h2 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem;">Level Complete! 🎉</h2>
+            <div style="color: gold; font-size: 2rem; margin: 1rem 0;" id="stars"></div>
+            <div style="margin: 1.5rem 0;">
+                <p>Moves: <span id="finalMoves">0</span></p>
+                <p>Time: <span id="finalTime">0:00</span></p>
+            </div>
+            <button class="button" id="nextLevelBtn">Next Level</button>
+            <button class="button secondary" id="retryLevelBtn">Retry Level</button>
+        </div>
+    </div>
+
+    <script>
+        const LEVELS = [
+            { pairs: 6, grid: [3, 4], maxMoves: 15, timeLimit: 60 },
+            { pairs: 8, grid: [4, 4], maxMoves: 20, timeLimit: 90 },
+            { pairs: 10, grid: [4, 5], maxMoves: 25, timeLimit: 120 },
+            { pairs: 12, grid: [4, 6], maxMoves: 30, timeLimit: 150 },
+            { pairs: 15, grid: [5, 6], maxMoves: 38, timeLimit: 180 },
+            { pairs: 18, grid: [6, 6], maxMoves: 45, timeLimit: 210 },
+            { pairs: 21, grid: [6, 7], maxMoves: 52, timeLimit: 240 },
+            { pairs: 24, grid: [6, 8], maxMoves: 60, timeLimit: 270 },
+            { pairs: 28, grid: [7, 8], maxMoves: 70, timeLimit: 300 },
+            { pairs: 32, grid: [8, 8], maxMoves: 80, timeLimit: 330 }
+        ];
+
+        const API_ENDPOINTS = {
+            pokemon: 'https://pokeapi.co/api/v2/pokemon/',
+            rickandmorty: 'https://rickandmortyapi.com/api/character/',
+            disney: 'https://api.disneyapi.dev/characters',
+            marvel: 'https://gateway.marvel.com/v1/public/characters'
+        };
+
+        // Game state
+        let currentLevel = 0;
+        let currentTheme = 'pokemon';
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        let timer = 0;
+        let timerInterval;
+        let gameStarted = false;
+        let soundEnabled = true;
+
+        // Initialize game
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeGame();
+            setupEventListeners();
+        });
+
+        function initializeGame() {
+            startLevel(0);
+            updateStats();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('restartButton').addEventListener('click', () => startLevel(currentLevel));
+            document.getElementById('soundToggle').addEventListener('click', toggleSound);
+            document.getElementById('nextLevelBtn').addEventListener('click', () => startLevel(currentLevel + 1));
+            document.getElementById('retryLevelBtn').addEventListener('click', () => startLevel(currentLevel));
+
+            // Theme selection
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    currentTheme = e.target.dataset.theme;
+                    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    startLevel(currentLevel);
+                });
+            });
+        }
+
+        async function fetchCardData(count) {
+            try {
+                const items = [];
+                switch (currentTheme) {
+                    case 'pokemon':
+                        for (let i = 1; i <= count; i++) {
+                            const response = await fetch(`${API_ENDPOINTS.pokemon}${i}`);
+                            const data = await response.json();
+                            items.push({
+                                id: data.id,
+                                name: data.name,
+                                image: data.sprites.other['official-artwork'].front_default
+                            });
+                        }
+                        break;
+                    case 'rickandmorty':
+                        const rmResponse = await fetch(`${API_ENDPOINTS.rickandmorty}${Array.from({ length: count }, (_, i) => i + 1).join(',')}`);
+                        const rmData = await rmResponse.json();
+                        items.push(...rmData.map(char => ({
+                            id: char.id,
+                            name: char.name,
+                            image: char.image
+                        })));
+                        break;
+                    // Add other API implementations as needed
+                }
+                return items;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
+
+
+
+        async function startLevel(level) {
+            currentLevel = level;
+            resetGameState();
+
+            const levelConfig = LEVELS[level];
+            const cardData = await fetchCardData(levelConfig.pairs);
+
+            // Create pairs
+            const cardPairs = [...cardData, ...cardData];
+            cards = shuffleArray(cardPairs);
+
+            // Setup game board
+            gameBoard.style.gridTemplateColumns = `repeat(${levelConfig.grid[1]}, 1fr)`;
+            gameBoard.innerHTML = '';
+
+            // Create and add cards to the board
+            cards.forEach((card, index) => {
+                const cardElement = createCard(card);
+                cardElement.dataset.index = index;
+                cardElement.addEventListener('click', () => handleCardClick(cardElement));
+                gameBoard.appendChild(cardElement);
+            });
+
+            updateStats();
+            startTimer();
+        }
+
+        function createCard(item) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="card-front">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="card-back">
+                    <i class="fas fa-question"></i>
+                </div>
+            `;
+            return card;
+        }
+
+        function handleCardClick(card) {
+            if (!gameStarted) {
+                startTimer();
+            }
+
+            if (
+                flippedCards.length >= 2 ||
+                card.classList.contains('flipped') ||
+                card.classList.contains('matched')
+            ) {
+                return;
+            }
+
+            flipCard(card);
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                moves++;
+                updateStats();
+                checkForMatch();
+            }
+        }
+
+        function flipCard(card) {
+            card.classList.add('flipped');
+            if (soundEnabled) {
+                playSound('flip');
+            }
+        }
+
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            const index1 = parseInt(card1.dataset.index);
+            const index2 = parseInt(card2.dataset.index);
+
+            if (cards[index1].id === cards[index2].id) {
+                handleMatch(card1, card2);
+            } else {
+                handleMismatch(card1, card2);
+            }
+        }
+
+        function handleMatch(card1, card2) {
+            setTimeout(() => {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                if (soundEnabled) {
+                    playSound('match');
+                }
+                matchedPairs++;
+                flippedCards = [];
+                updateStats();
+                checkWinCondition();
+            }, 500);
+        }
+
+        function handleMismatch(card1, card2) {
+            setTimeout(() => {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+                if (soundEnabled) {
+                    playSound('mismatch');
+                }
+                flippedCards = [];
+            }, 1000);
+        }
+
+        function checkWinCondition() {
+            const levelConfig = LEVELS[currentLevel];
+            if (matchedPairs === levelConfig.pairs) {
+                clearInterval(timerInterval);
+                setTimeout(showWinModal, 500);
+            }
+        }
+
+        function showWinModal() {
+            const modal = document.getElementById('winModal');
+            const stars = calculateStars();
+
+            document.getElementById('finalMoves').textContent = moves;
+            document.getElementById('finalTime').textContent = formatTime(timer);
+            document.getElementById('stars').innerHTML = '⭐'.repeat(stars);
+
+            modal.classList.add('visible');
+        }
+
+        function calculateStars() {
+            const levelConfig = LEVELS[currentLevel];
+            const moveRatio = moves / levelConfig.maxMoves;
+
+            if (moveRatio <= 0.6) return 3;
+            if (moveRatio <= 0.8) return 2;
+            return 1;
+        }
+
+        function resetGameState() {
+            clearInterval(timerInterval);
+            flippedCards = [];
+            matchedPairs = 0;
+            moves = 0;
+            timer = 0;
+            gameStarted = false;
+            updateStats();
+        }
+
+        function startTimer() {
+            gameStarted = true;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timer++;
+                updateStats();
+            }, 1000);
+        }
+
+        function updateStats() {
+            const levelConfig = LEVELS[currentLevel];
+
+            document.getElementById('level').textContent = `Level ${currentLevel + 1}`;
+            document.getElementById('moves').textContent = moves;
+            document.getElementById('pairs').textContent = `${matchedPairs}/${levelConfig.pairs}`;
+            document.getElementById('timer').textContent = formatTime(timer);
+
+            const progress = (matchedPairs / levelConfig.pairs) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.querySelector('#soundToggle i');
+            icon.className = soundEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+        }
+
+        function playSound(type) {
+            // Add your sound implementation here
+            // You can use the Web Audio API or HTML5 Audio
+            const sounds = {
+                flip: 'flip.mp3',
+                match: 'match.mp3',
+                mismatch: 'mismatch.mp3'
+            };
+            // Example implementation:
+            // new Audio(sounds[type]).play().catch(e => console.log('Audio disabled'));
+            
+        }
+
+        // Initialize game on load
+        // window.addEventListener('load', initializeGame);
+        window.addEventListener('load', () => {
+            initializeGame();
+            setupEventListeners();
+        });
+    </script>
+</body>
+
+</html>
