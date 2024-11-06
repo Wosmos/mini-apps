@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <h1 class="title">Weather App</h1>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Enter city name..." id="cityInput">
+            </div>
+        </section>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="error-message" id="error">
+            City not found. Please try again.
+        </div>
+
+        <div class="weather-card" id="weatherCard">
+            <div class="weather-main">
+                <div class="weather-temp" id="temperature">--°C</div>
+                <i class="weather-icon fas fa-cloud" id="weatherIcon"></i>
+            </div>
+            <div class="weather-details">
+                <div class="weather-detail">
+                    <i class="detail-icon fas fa-map-marker-alt"></i>
+                    <div class="detail-info">
+                        <h3>Location</h3>
+                        <p id="location">--</p>
+                    </div>
+                </div>
+                <div class="weather-detail">
+                    <i class="detail-icon fas fa-water"></i>
+                    <div class="detail-info">
+                        <h3>Humidity</h3>
+                        <p id="humidity">--%</p>
+                    </div>
+                </div>
+                <div class="weather-detail">
+                    <i class="detail-icon fas fa-wind"></i>
+                    <div class="detail-info">
+                        <h3>Wind Speed</h3>
+                        <p id="windSpeed">-- km/h</p>
+                    </div>
+                </div>
+                <div class="weather-detail">
+                    <i class="detail-icon fas fa-cloud"></i>
+                    <div class="detail-info">
+                        <h3>Condition</h3>
+                        <p id="condition">--</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+</body>
+<script src="script.js"></script>
+</html>
