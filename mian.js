@@ -27,7 +27,7 @@ class ProjectCard extends Component {
       timeToComplete,
     } = this.props;
     return `
-                    <div class="project-card" data-category="${category}">
+     <div class="project-card" data-category="${category}">
                         <i class="project-icon ${icon}"></i>
                         <h2 class="project-title">${title}</h2>
                         <p class="project-description">${description}</p>
@@ -116,46 +116,46 @@ class ProjectsGrid extends Component {
           difficulty: 'Intermediate',
           timeToComplete: '~4 hours',
         },
-        {
-          title: 'Quiz App',
-          description:
-            'Interactive quiz platform with multiple categories and difficulty levels.',
-          icon: 'fas fa-question-circle',
-          category: 'games',
-          link: 'quiz-app/index.html',
-          difficulty: 'Advanced',
-          timeToComplete: '~5 hours',
-        },
-        {
-          title: 'Color Palette',
-          description:
-            'Generate and explore beautiful color combinations with export options.',
-          icon: 'fas fa-palette',
-          category: 'tools',
-          link: 'colors.html',
-          difficulty: 'Intermediate',
-          timeToComplete: '~3 hours',
-        },
-        {
-          title: 'Notes App',
-          description:
-            'Rich text editor with tags, categories, and cloud sync capabilities.',
-          icon: 'fas fa-sticky-note',
-          category: 'apps',
-          link: 'notes.html',
-          difficulty: 'Advanced',
-          timeToComplete: '~6 hours',
-        },
-        {
-          title: 'Image Gallery',
-          description:
-            'Dynamic image gallery with filters, search, and lightbox preview.',
-          icon: 'fas fa-images',
-          category: 'apps',
-          link: 'gallery.html',
-          difficulty: 'Advanced',
-          timeToComplete: '~5 hours',
-        },
+        // {
+        //   title: 'Quiz App',
+        //   description:
+        //     'Interactive quiz platform with multiple categories and difficulty levels.',
+        //   icon: 'fas fa-question-circle',
+        //   category: 'games',
+        //   link: 'quiz-app/index.html',
+        //   difficulty: 'Advanced',
+        //   timeToComplete: '~5 hours',
+        // },
+        // {
+        //   title: 'Color Palette',
+        //   description:
+        //     'Generate and explore beautiful color combinations with export options.',
+        //   icon: 'fas fa-palette',
+        //   category: 'tools',
+        //   link: 'colors.html',
+        //   difficulty: 'Intermediate',
+        //   timeToComplete: '~3 hours',
+        // },
+        // {
+        //   title: 'Notes App',
+        //   description:
+        //     'Rich text editor with tags, categories, and cloud sync capabilities.',
+        //   icon: 'fas fa-sticky-note',
+        //   category: 'apps',
+        //   link: 'notes.html',
+        //   difficulty: 'Advanced',
+        //   timeToComplete: '~6 hours',
+        // },
+        // {
+        //   title: 'Image Gallery',
+        //   description:
+        //     'Dynamic image gallery with filters, search, and lightbox preview.',
+        //   icon: 'fas fa-images',
+        //   category: 'apps',
+        //   link: 'gallery.html',
+        //   difficulty: 'Advanced',
+        //   timeToComplete: '~5 hours',
+        // },
       ],
       filter: 'all',
       searchQuery: '',
