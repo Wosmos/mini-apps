@@ -136,16 +136,16 @@ class ProjectsGrid extends Component {
         //   difficulty: 'Intermediate',
         //   timeToComplete: '~3 hours',
         // },
-        // {
-        //   title: 'Notes App',
-        //   description:
-        //     'Rich text editor with tags, categories, and cloud sync capabilities.',
-        //   icon: 'fas fa-sticky-note',
-        //   category: 'apps',
-        //   link: 'notes.html',
-        //   difficulty: 'Advanced',
-        //   timeToComplete: '~6 hours',
-        // },
+        {
+          title: 'Notes App',
+          description:
+            'Rich text editor with tags, categories, and cloud sync capabilities.',
+          icon: 'fas fa-sticky-note',
+          category: 'apps',
+          link: 'notes-taking-app/index.html',
+          difficulty: 'Advanced',
+          timeToComplete: '~6 hours',
+        },
         // {
         //   title: 'Image Gallery',
         //   description:
